@@ -84,41 +84,87 @@ do
 	distance = Math.floor((Math.random()*3));
 	
 	// STEP 3: Attempt to move the marker that direction and distance within the grid
-	// If the new position would be invalid, do not move the marker
+	// If the new position would be invalid, do not move the marker.
 	switch (direction)
 	{
 		case 0: // up
 			if(posY + distance <= 9)
 			{
-				posY += distance;
+				posY += distance; // STEP 4: Move the marker to the new position.
 			}
 			break;
 		case 1: // down
 			if(posY - distance >= 0)
 			{
-				posY -= distance;
+				posY -= distance; // STEP 4: Move the marker to the new position.
 			}
 			break;
 		case 2: // right
 			if(posX + distance <= 9)
 			{
-				posX += distance;
+				posX += distance; // STEP 4: Move the marker to the new position.
 			}
 			break;
 		case 3: // left
 			if(posX - distance >= 0)
 			{
-				posX -= distance;
+				posX -= distance; // STEP 4: Move the marker to the new position.
 			}
 			break;
 		default:
 			break;
 	}
+	
+	// Increment the touch count at the marker's current position on the grid.
+	grid[posX][posY]++;
 	count++;
 }while(count <= 1000000 && (posX != 9 || posY != 9));
 
+// Calculate the max and min values of the grid cells.
+for(i = 0; i <= 9; i++)
+{
+	for(j = 0; j <= 9; j++)
+	{
+		// Check for touch counts higher than the current max.
+		if(grid[i][j] > max)
+		{
+			max = grid[i][j];
+		}
+		
+		// Check for touch counts lower than the current min.
+		if(grid[i][j] < min)
+		{
+			min = grid[i][j];
+		}
+	}
+}
+
+// Display the number of moves taken during this game.
 document.getElementById("moveCount").innerHTML = "Number of moves taken: " + count;
+
+// Display the coordinates of the marker at the end of the game.
 document.getElementById("markerPosition").innerHTML = "Final marker position: (" + posX + ',' + posY + ')';
+
+// Display "You win!" or "No steps left!" depending on the end state of the game.
+if(count <= 1000000 && posX == 9 && posY == 9)
+{
+	document.getElementById("gameResult").innerHTML = "You win!";
+}
+else
+{
+	document.getElementById("gameResult").innerHTML = "No steps left!";
+}
+
+// Display the maximum number of times a given cell in the grid was visited.
+document.getElementById("maxTouches").innerHTML = "The cell most frequently visited was visited " + max + " times.";
+
+// Display the minimum number of times a given cell in the grid was visited.
+document.getElementById("minTouches").innerHTML = "The cell least frequently visited was visited " + 0 + " times.";
+
+// Display the average number of times a given cell in the grid was visited.
+average = count/100;
+document.getElementById("averageTouches").innerHTML = "Each cell was visited an average of " + average + " times."; 
+
 
 </script>
 
